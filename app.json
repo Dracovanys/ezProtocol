@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "autoDiag",
-    "slug": "autoDiag",
+    "name": "ezProtocol",
+    "slug": "ezProtocol",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
