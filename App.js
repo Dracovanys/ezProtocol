@@ -52,21 +52,18 @@ function Tela_SolicitarExames({ navigation }) {
     { id: 'Cardiopatia hipertensiva' },
     { id: 'Diabetes mellitus' },
     { id: 'Arritmias cardíacas' },
-    { id: 'Cardiopatia hipertensiva' },
-    { id: 'Diabetes mellitus' },
-    { id: 'Arritmias cardíacas' },
-    { id: 'Cardiopatia hipertensiva' },
-    { id: 'Diabetes mellitus' },
-    { id: 'Arritmias cardíacas' },
-    { id: 'Cardiopatia hipertensiva' },
-    { id: 'Diabetes mellitus' },
-    { id: 'Arritmias cardíacas' },
-    { id: 'Cardiopatia hipertensiva' },
-    { id: 'Diabetes mellitus' },
-    { id: 'Arritmias cardíacas' },
-    { id: 'Cardiopatia hipertensiva' },
-    { id: 'Diabetes mellitus' },
-    { id: 'Arritmias cardíacas' },
+    { id: 'Insuficiência cardíaca' },
+    { id: 'Síndrome coronariana' },
+    { id: 'Valvopatias' },
+    { id: 'Miocardiopatias' },
+    { id: 'Cardiopatias congênitas' },
+    { id: 'Cirrose hepática' },
+    { id: 'HIV' },
+    { id: 'Obesidade mórbida' },
+    { id: 'Anemia falciforme' },
+    { id: 'Doença renal crônica' },
+    { id: 'Doença cerebrovascular' },
+    { id: '	Hipertensão arterial resistente' },
   ];
   const [selectedDiseases, setSelectedDiseases] = useState([]);
   return (
@@ -149,7 +146,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="Tela Principal" component={Tela_Principal}/> */}
+        <Stack.Screen name="Tela Principal" component={Tela_Principal}/>
         <Stack.Screen
           name="Solicitar Exames"
           component={Tela_SolicitarExames}
