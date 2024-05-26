@@ -63,7 +63,7 @@ function Tela_SolicitarExames({ navigation }) {
     { id: 'Anemia falciforme' },
     { id: 'Doença renal crônica' },
     { id: 'Doença cerebrovascular' },
-    { id: '	Hipertensão arterial resistente' },
+    { id: 'Hipertensão arterial resistente' },
   ];
   const [selectedDiseases, setSelectedDiseases] = useState([]);
   return (
@@ -147,10 +147,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Tela Principal" component={Tela_Principal}/>
-        <Stack.Screen
-          name="Solicitar Exames"
-          component={Tela_SolicitarExames}
-        />
+        <Stack.Screen name="Solicitar Exames" component={Tela_SolicitarExames}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
