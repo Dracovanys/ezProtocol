@@ -1,13 +1,15 @@
+import Checkbox from './components/Checkbox';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Picker } from '@react-native-picker/picker';
-import Checkbox from './components/Checkbox';
 import {
   StyleSheet,
   Text,
   View,
+  Modal,
   Image,
   Pressable,
   TextInput,
@@ -48,24 +50,33 @@ function Tela_Principal({ navigation }) {
 function Tela_SolicitarExames({ navigation }) {
   const [genero, setGenero] = useState(); // Armazena o valor do Picker "Gênero"
   const handleValueChange = (itemValue, itemIndex) => setGenero(itemValue); // Altera o valor do Picker "Gênero"
-  const diseases = [
-    { id: 'Cardiopatia hipertensiva' },
-    { id: 'Diabetes mellitus' },
-    { id: 'Arritmias cardíacas' },
-    { id: 'Insuficiência cardíaca' },
-    { id: 'Síndrome coronariana' },
-    { id: 'Valvopatias' },
-    { id: 'Miocardiopatias' },
-    { id: 'Cardiopatias congênitas' },
-    { id: 'Cirrose hepática' },
-    { id: 'HIV' },
-    { id: 'Obesidade mórbida' },
-    { id: 'Anemia falciforme' },
-    { id: 'Doença renal crônica' },
-    { id: 'Doença cerebrovascular' },
-    { id: 'Hipertensão arterial resistente' },
+  const conditions = [
+    { key: 1, text: 'Tabagismo', asa: 1 },
+    { key: 2, text: 'Gestação', asa: 1 },
+    { key: 3, text: 'Obesidade', asa: 2 },
+    { key: 4, text: 'Obesidade Mórbida', asa: 3 },
+    { key: 5, text: 'Marcapasso Implantado', asa: 2 },
+    { key: 6, text: 'Endocrinopatia', asa: 2 },
+    { key: 7, text: 'Alcoolismo Social', asa: 4 },
+    { key: 8, text: 'Dependência Alcoólica', asa: 5 },
   ];
-  const [selectedDiseases, setSelectedDiseases] = useState([]);
+  const [selectedCondition, setSelectedCondition] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentAsa, setCurrentAsa] = useState(false);
+  function checkAsa(asaList) {   
+    console.log(asaList)
+    if (asaList[0].asa == 1) {
+      setCurrentAsa('ASA I');
+    } else if (asaList[0].asa == 2) {
+      setCurrentAsa('ASA II');
+    } else if (asaList[0].asa == 3) {
+      setCurrentAsa('ASA III');
+    } else if (asaList[0].asa == 4) {
+      setCurrentAsa('ASA IV');
+    } else if (asaList[0].asa == 5) {
+      setCurrentAsa('ASA V');
+    }
+  }
   return (
     <View style={styles.container}>
       <StatusBar style="auto" translucent={false} hidden={false} />
@@ -93,9 +104,10 @@ function Tela_SolicitarExames({ navigation }) {
           backgroundColor: 'white',
         }}>
         <ScrollView style={{ width: '100%' }}>
+
           {/* Idade */}
           <View>
-            <Text style={{ marginLeft: 12, marginTop: 18 }}>Idade</Text>
+            <Text style={styles.fieldTitle}>Idade</Text>
             <TextInput
               style={styles.input}
               placeholder="18"
@@ -105,7 +117,7 @@ function Tela_SolicitarExames({ navigation }) {
 
           {/* Gênero */}
           <View>
-            <Text style={{ marginLeft: 12, marginTop: 18 }}>Gênero</Text>
+            <Text style={styles.fieldTitle}>Gênero</Text>
             <Picker
               style={{
                 marginLeft: 12,
@@ -121,18 +133,74 @@ function Tela_SolicitarExames({ navigation }) {
             </Picker>
           </View>
 
-          {/* Doenças */}
+          {/* Características/Condições */}
           <View>
-            <Text style={{ marginLeft: 12, marginTop: 18 }}>Doenças</Text>
+            <Text style={styles.fieldTitle}>Características/Condições</Text>
             <ScrollView style={{ width: '90%', height: 200, marginTop: 12 }}>
               <Checkbox
-                id="diseases"
-                options={diseases}
-                selected={selectedDiseases}
-                setSelected={setSelectedDiseases}
+                id="conditions"
+                options={conditions}
+                selected={selectedCondition}
+                setSelected={setSelectedCondition}
                 multiple
+                checkAsa={checkAsa}
               />
             </ScrollView>
+          </View>
+
+          {/* Classificação ASA */}
+          <View>
+            <View style={{ display: 'flex', flexDirection: 'row'}}>
+              <Text style={styles.fieldTitle}>Classificação ASA</Text>
+
+              {/* Pop-up informativo das classificações ASA */}
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {                  
+                  console.log('Fechando informativo sobre as classificações ASA...');
+                  setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <View style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'flex-end'}}>
+                      <Icon name="close-circle" color={'#c0c0c0'} size={30} style={{marginTop: 10, marginRight: 10}} onPress={() => {
+                        console.log('Fechando informativo sobre as classificações ASA...');
+                        setModalVisible(!modalVisible)
+                      }}/>
+                    </View>
+                    <ScrollView style={{ width: '90%', height: 350, marginVertical: 20}}>
+                      
+                      {/* ASA I */}
+                      <Text style={styles.asaTitle}>ASA I</Text>
+                      <Text style={styles.asaText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+                      
+                      {/* ASA I */}
+                      <Text style={styles.asaTitle}>ASA I</Text>
+                      <Text style={styles.asaText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+                      
+                      {/* ASA I */}
+                      <Text style={styles.asaTitle}>ASA I</Text>
+                      <Text style={styles.asaText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+                      
+                      {/* ASA I */}
+                      <Text style={styles.asaTitle}>ASA I</Text>
+                      <Text style={styles.asaText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+
+                    </ScrollView>
+                  </View>
+                </View>
+              </Modal>
+              <Pressable
+                onPress={() => {
+                  console.log('Exibindo informativo sobre as classificações ASA...');
+                  setModalVisible(true)
+                }}>
+                <Icon name="help-circle" style={{ marginLeft: 5, marginTop: 19 }} color={'#c0c0c0'} size={20}/>
+              </Pressable>
+            </View>
+            <Text style={{ marginLeft: 12, borderWidth: 1, borderRadius: 10, padding: 10, fontSize: 18, marginTop: 12, alignSelf: 'flex-start' }}>{currentAsa}</Text>
           </View>
         </ScrollView>
       </View>
@@ -187,5 +255,44 @@ const styles = StyleSheet.create({
     marginTop: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 10
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  asaTitle: {
+    alignSelf: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginVertical: 8
+  },
+
+  asaText: {
+    textAlign: 'justify'
+  },
+
+  fieldTitle: {
+    marginLeft: 12,
+    marginTop: 18,
+    fontSize: 15,
+    fontWeight: 'bold'
   },
 });
